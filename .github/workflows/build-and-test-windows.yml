@@ -1,0 +1,59 @@
+name: Build and Test MSVC
+on: [push]
+jobs:
+  build:
+    name: ${{ matrix.config.name }}
+    runs-on: ${{ matrix.config.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+        - {
+            name: "MSVC 2022",
+            os: windows-2022,
+            cc: "cl",
+            cxx: "cl",
+            toolset: "v143",
+            environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2022/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
+          }
+        - {
+            name: "MSVC 2019",
+            os: windows-2022,
+            cc: "cl",
+            cxx: "cl",
+            toolset: "v142",
+            environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2022/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
+          }
+        - {
+            name: "MSVC 2017",
+            os: windows-2022,
+            cc: "cl",
+            cxx: "cl",
+            toolset: "v141",
+            environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2022/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
+          }
+        - {
+            name: "MSVC 2017",
+            os: windows-2022,
+            cc: "cl",
+            cxx: "cl",
+            toolset: "v140",
+            environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2022/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
+          }
+    env:
+      CC: ${{ matrix.config.cc }}
+      CXX: ${{ matrix.config.cxx }}
+      VCPKG_DEFAULT_TRIPLET: x64-windows
+    steps:
+      - uses: actions/checkout@v2
+      - run: echo "🏃‍♂️ Running job ${{ matrix.config.name }}."
+      - name: 👷‍♂️ Build
+        run: |
+            cd build
+            cmake -G "Visual Studio 17 2022" -A x64 -T ${{ toolset }} ..
+            cmake --build . --config Debug
+      - name: 🔍 Run
+        run: |
+            cd build
+            cmake --build . --config Debug --target run_demo
+
