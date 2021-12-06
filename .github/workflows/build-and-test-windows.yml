@@ -32,14 +32,6 @@ jobs:
             token: "v141",
             environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2022/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
           }
-        - {
-            name: "MSVC 2015",
-            os: windows-2022,
-            cc: "cl",
-            cxx: "cl",
-            token: "v140",
-            environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2022/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
-          }
     env:
       CC: ${{ matrix.config.cc }}
       CXX: ${{ matrix.config.cxx }}
